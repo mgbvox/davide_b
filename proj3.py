@@ -59,21 +59,22 @@ class DynasticDescent:
             chosen_key = f'{name.title()}_{choice}'
             return self.tree[chosen_key]
 
-
-
-    def relate(self):
+    def relate(self, parent_name = None, child_name = None, parent = None, child = None):
         '''
         Adds a child to a parent Person object.
         :param parent: a Person object.
         :param child: a Person object.
         :return: None
         '''
+        if not parent_name and not parent:
+            parent_name = str(input("What is the name of the parent human? "))
+        if not child_name and not child:
+            child_name = str(input("What is the name of the child human? "))
 
-        parent_name = str(input("What is the name of the parent human? "))
-        child_name = str(input("What is the name of the child human? "))
-
-        parent = self.lookup(parent_name)
-        child = self.lookup(child_name)
+        if not parent:
+            parent = self.lookup(parent_name)
+        if not child:
+            child = self.lookup(child_name)
 
         '''
         What happens if two people in the tree have the same name?
@@ -91,6 +92,18 @@ class DynasticDescent:
             # Matt -> 'Matt_1'
             child.parents.append(parent.get_key())
             parent.children.append(child.get_key())
+
+    def get_ancestors(self, person, degree, depth = 0):
+        if depth == degree:
+            return [person.name]
+        else:
+            ancestors = []
+            parents = person.parents
+            for parent_key in parents:
+                parent = self.lookup(parent_key)
+                ancestors += self.get_ancestors(parent,degree,depth=depth+1)
+            return ancestors
+
 
 
 if __name__ == "__main__":
