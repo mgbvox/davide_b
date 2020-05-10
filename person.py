@@ -1,12 +1,9 @@
 class Person:
-    def __init__(self, name, parents = dict(), children = dict()):
+    def __init__(self, name):
         self.name = name
         self.id = None
-        self.parents = parents
-        self.children = children
+        self.parents = []
+        self.children = []
 
-    def __repr__(self):
-        return f'Person({self.name})'
-
-    def greet(self):
-        print(f'Hello {self.name}')
+    def get_key(self):
+        return f'{self.name}_{self.id}'
